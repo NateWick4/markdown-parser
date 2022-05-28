@@ -31,26 +31,25 @@ public class MarkdownParse {
 
         return toReturn;
     }
-
     public static Map<String, List<String>> getLinks(File dirOrFile) throws IOException {
-	           Map<String, List<String>> result = new HashMap<>();
-		          if(dirOrFile.isDirectory()) {
-				             for(File f: dirOrFile.listFiles()) {
-						                    result.putAll(getLinks(f));
-								               }
-					                return result;
-						               }
-		          else {
-			            Path p = dirOrFile.toPath();
-			              int lastDot = p.toString().lastIndexOf(".");
-			              if(lastDot == -1 || !p.toString().substring(lastDot).equals(".md")) {
-				                return result;
-				              }
-		                  ArrayList<String> links = getLinks(Files.readString(p));
-	                result.put(dirOrFile.getPath(), links);
+        Map<String, List<String>> result = new HashMap<>();
+        if(dirOrFile.isDirectory()) {
+            for(File f: dirOrFile.listFiles()) {
+                result.putAll(getLinks(f));
+            }
             return result;
         }
-    }	
+        else {
+            Path p = dirOrFile.toPath();
+            int lastDot = p.toString().lastIndexOf(".");
+            if(lastDot == -1 || !p.toString().substring(lastDot).equals(".md")) {
+                return result;
+            }
+            ArrayList<String> links = getLinks(Files.readString(p));
+            result.put(dirOrFile.getPath(), links);
+            return result;
+        }
+    }
     public static void main(String[] args) throws IOException {
         Path fileName = Path.of(args[0]);
         String content = Files.readString(fileName);
